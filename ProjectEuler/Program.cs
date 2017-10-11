@@ -11,21 +11,10 @@ namespace ProjectEuler
         static void Main(string[] args)
         {
 
-            //for(int i = 2; i < 200; i++)
-            //{
-            //    if(IsPrime(i) && IsPrime(i + 2) && IsPrime(i + 6))
-            //    {
-            //        Console.WriteLine(i + " " + (i + 2) + " " + (i + 6));
-            //    }
-            //    else if (IsPrime(i) && IsPrime(i + 4) && IsPrime(i + 6))
-            //    {
-            //        Console.WriteLine(i + " " + (i + 4) + " " + (i + 6));
-            //    }
-            //}
+
 
 
             Trie myTrie = new Trie();
-
             myTrie.insert("p");
             myTrie.insert("pulaks");
             myTrie.insert("pul");
