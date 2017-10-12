@@ -60,11 +60,15 @@ namespace ProjectEuler
             //x.Left = new Node(46);
             //x.Right = new Node(49);
 
-            x = myTree.InOrderPredecessor(19);
-            x = myTree.InOrderPredecessor(35);
-            x = myTree.InOrderPredecessor(12);
-            x = myTree.InOrderPredecessor(1);
-            x = myTree.InOrderPredecessor(59);
+            //x = myTree.InOrderPredecessor(19);
+            //x = myTree.FindParent(x);
+            //x = myTree.InOrderPredecessor(12);
+            //x = myTree.FindParent(x);
+            //x = myTree.InOrderPredecessor(59);
+            //x = myTree.FindParent(x);
+            myTree.DeleteNode(myTree.Root, 41);
+            myTree.DeleteNode(myTree.Root, 17);
+
             Console.WriteLine("");
             myTree.PrintInorder(myTree.Root);
 

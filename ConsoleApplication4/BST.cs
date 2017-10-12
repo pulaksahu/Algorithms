@@ -246,5 +246,94 @@ namespace ConsoleApplication4
                 return predecessor;
             }
         }
+
+        public Node FindParent(Node root, Node current)
+        {
+            Node temp = root;
+            Node parent = null;
+
+            while(temp != current)
+            {
+                if(current.Data < temp.Data)
+                {
+                    parent = temp;
+                    temp = temp.Left;
+                }
+                else if(current.Data > temp.Data)
+                {
+                    parent = temp;
+                    temp = temp.Right;
+                }                
+            }
+            return parent;
+        }
+
+        /// <summary>
+        /// Handles corner cases like when root of the subtree is deleted
+        /// It is a recursive function, so complete the 
+        /// </summary>
+        /// <param name="root">Root of the subtree in question</param>
+        /// <param name="data">Data of the node being deleted</param>
+        public void DeleteNode(Node root, int data)
+        {
+            Node current = FindNode(root, data);
+            Node leftChild = current.Left;
+            Node rightChild = current.Right;
+            Node parent = FindParent(root, current);
+
+            if(parent == null) // root node is being deleted
+            {
+                if (leftChild != null)
+                {
+                    // replace with max of left subtree or min of right subtree
+                    Node maxOfLeft = FindMaxRecursive(current.Left);
+                    current.Data = maxOfLeft.Data;
+
+                    // finally delete the leaf node containing that data
+                    DeleteNode(current.Left, maxOfLeft.Data);
+                }
+                else
+                {
+                    // replace with max of left subtree or min of right subtree
+                    Node minOfRight = FindMinRecursive(current.Right);
+                    current.Data = minOfRight.Data;
+
+                    // finally delete the leaf node containing that data
+                    DeleteNode(current.Right, minOfRight.Data);
+                }
+            }
+            // Base case of recursion - min or max of a subtree would always be a leaf node
+            // leaf node (node without any children) to be deleted
+            else if(leftChild == null && rightChild == null) 
+            {
+                if (current.Data > parent.Data)
+                    parent.Right = null;
+                else
+                    parent.Left = null;
+            }
+            else if(leftChild == null && rightChild != null)
+            {
+                if (current.Data > parent.Data)
+                    parent.Right = rightChild;
+                else
+                    parent.Left = rightChild;
+            }
+            else if(rightChild == null && leftChild != null)
+            {                
+                if (current.Data > parent.Data)
+                    parent.Right = leftChild;
+                else
+                    parent.Left = leftChild;
+            }
+            else // both children are not null
+            {
+                // replace with max of left subtree or min of right subtree
+                Node maxOfLeft = FindMaxRecursive(current.Left);
+                current.Data = maxOfLeft.Data;
+
+                // finally delete the leaf node containing that data
+                DeleteNode(current.Left, maxOfLeft.Data);
+            }
+        }
     }
 }
