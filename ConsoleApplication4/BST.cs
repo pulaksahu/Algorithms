@@ -247,6 +247,13 @@ namespace ConsoleApplication4
             }
         }
 
+        /// <summary>
+        /// Traverse the entire tree from root of the tree/subtree to the node, until its parent is found
+        /// Time complexity is O(h)
+        /// </summary>
+        /// <param name="root">Root of the subtree in question</param>
+        /// <param name="current">Reference to the node whose parent is needed</param>
+        /// <returns></returns>
         public Node FindParent(Node root, Node current)
         {
             Node temp = root;
@@ -270,7 +277,7 @@ namespace ConsoleApplication4
 
         /// <summary>
         /// Handles corner cases like when root of the subtree is deleted
-        /// It is a recursive function, so complete the 
+        /// It is a recursive function, so complete the base case when leaf node is deleted
         /// </summary>
         /// <param name="root">Root of the subtree in question</param>
         /// <param name="data">Data of the node being deleted</param>
