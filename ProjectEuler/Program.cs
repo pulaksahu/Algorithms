@@ -43,13 +43,15 @@ namespace ProjectEuler
             myTree.Add(35);
             myTree.Add(0);
 
-            //Node min = myTree.FindMinIterative(myTree.Root);
+            Node min = myTree.FindMinIterative(myTree.Root);
 
-            //min = myTree.FindMinRecursive(myTree.Root);
+            min = myTree.FindMinRecursive(myTree.Root);
 
-            //Node max = myTree.FindMaxIterative(myTree.Root);
+            Node max = myTree.FindMaxIterative(myTree.Root);
 
-            //max = myTree.FindMaxRecursive(myTree.Root);
+            max = myTree.FindMaxRecursive(myTree.Root);
+
+            //max.Data = -1;
 
             myTree.PrintInorder(myTree.Root);
 
@@ -66,20 +68,83 @@ namespace ProjectEuler
             //x = myTree.FindParent(x);
             //x = myTree.InOrderPredecessor(59);
             //x = myTree.FindParent(x);
-            myTree.DeleteNode(myTree.Root, 41);
-            myTree.DeleteNode(myTree.Root, 17);
+            //myTree.DeleteNode(myTree.Root, 41);
+            myTree.DeleteNode(myTree.Root, 35);
+
+            //Console.WriteLine("");
+            //myTree.PrintInorder(myTree.Root);
+
+            //Queue<Node> q = new Queue<Node>();
+            //q.Enqueue(myTree.Root);
+
+            //myTree.PrintBFSRecursive(q);
 
             Console.WriteLine("");
-            myTree.PrintInorder(myTree.Root);
+            Console.WriteLine(myTree.IsBST());
 
-            Queue<Node> q = new Queue<Node>();
-            q.Enqueue(myTree.Root);
+            
+            //int[] a = {5,0,9,6,2,1,7,4,22,8,12,11,10,19};
 
-            myTree.PrintBFSRecursive(q);
-                        
+            //int[] b = MergeSort(a);
+
+            //foreach(int i in b)
+            //{
+            //    Console.Write(i.ToString() + " ");
+            //}
+
             Console.Read();
         }
 
+        public static int[] MergeSort(int[] a)
+        {
+            if(a.Length <= 1)
+            {
+                return a;
+            }
+
+            int length = a.Length;
+            int mid = length / 2;
+
+            int[] left = new int[mid];
+            int[] right = new int[length - mid];
+                
+            for(int i = 0; i < length; i++)
+            {
+                if (i < mid)
+                    left[i] = a[i];
+                else
+                    right[i - mid] = a[i];
+            }
+
+            left = MergeSort(left);
+            right = MergeSort(right);
+            
+            return Merge(left, right);
+        }
+
+        private static int[] Merge(int[] left, int[] right)
+        {
+            int[] newArray = new int[left.Length + right.Length];
+
+            int i, j, k;
+
+            for(i = 0, j = 0, k = 0; i < left.Length && j < right.Length; k++)
+            {
+                if (left[i] < right[j])
+                    newArray[k] = left[i++];
+                else 
+                    newArray[k] = right[j++];                
+            }            
+            while(j < right.Length)
+            {
+                newArray[k++] = right[j++];
+            }
+            while (i < left.Length)
+            {
+                newArray[k++] = left[i++];
+            }
+            return newArray;
+        }
 
         public static Boolean IsPrime(int number)
         {

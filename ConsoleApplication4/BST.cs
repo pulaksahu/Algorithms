@@ -342,5 +342,58 @@ namespace ConsoleApplication4
                 DeleteNode(current.Left, maxOfLeft.Data);
             }
         }
+
+        public int FindHeight(Node root)
+        {
+            if (root == null)
+                return -1;
+
+            else
+                return MaxInt(FindHeight(root.Left), FindHeight(root.Right)) + 1;
+        }
+
+        /// <summary>
+        /// Returns max of two integers
+        /// </summary>
+        /// <param name="p1"></param>
+        /// <param name="p2"></param>
+        /// <returns></returns>
+        private int MaxInt(int p1, int p2)
+        {
+            if (p1 > p2)
+                return p1;
+            else
+                return p2;
+        }
+
+        /// <summary>
+        /// Returns boolean whether the tree is a BST or not
+        /// Calls a helper method that may be private method
+        /// </summary>
+        /// <returns></returns>
+        public bool IsBST()
+        {
+            return IsBST(this.Root, Int32.MinValue, Int32.MaxValue);
+        }
+
+        /// <summary>
+        /// Helper method to find whether the subtree is BST or not
+        /// Recursive method - base case is when null node, is a BST
+        /// So every leaf node is a BST
+        /// </summary>
+        /// <param name="node"></param>
+        /// <param name="min"></param>
+        /// <param name="max"></param>
+        /// <returns></returns>
+        private bool IsBST(Node node, int min, int max)
+        {
+            if (node == null)
+                return true;
+
+            if (IsBST(node.Left, min, node.Data) && IsBST(node.Right, node.Data, max) && node.Data >= min && node.Data <= max)            
+                return true;
+            else
+                return false;
+        }
     }
 }
