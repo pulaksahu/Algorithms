@@ -11,6 +11,7 @@ namespace ProjectEuler
     {
         static void Main(string[] args)
         {
+            #region TrieTestCode
             //Trie myTrie = new Trie();
             //myTrie.insert("p");
             //myTrie.insert("pulaks");
@@ -22,42 +23,45 @@ namespace ProjectEuler
 
             ///bool c = myTrie.startsWith("pulak");
             ///
-            BST myTree = new BST();
-            myTree.Add(17);
-            myTree.Add(28);
-            myTree.Add(12);
-            myTree.Add(19);
-            myTree.Add(22);
-            myTree.Add(52);
-            myTree.Add(5);
-            myTree.Add(1);
-            myTree.Add(41);
-            myTree.Add(2);
-            myTree.Add(59);
-            myTree.Add(39);
-            myTree.Add(48);
-            myTree.Add(28);
-            myTree.Add(8);
-            myTree.Add(13);
-            myTree.Add(45);
-            myTree.Add(35);
-            myTree.Add(0);
+            #endregion
+            #region BSTTest
+            ///
+            //BST myTree = new BST();
+            //myTree.Add(17);
+            //myTree.Add(28);
+            //myTree.Add(12);
+            //myTree.Add(19);
+            //myTree.Add(22);
+            //myTree.Add(52);
+            //myTree.Add(5);
+            //myTree.Add(1);
+            //myTree.Add(41);
+            //myTree.Add(2);
+            //myTree.Add(59);
+            //myTree.Add(39);
+            //myTree.Add(48);
+            //myTree.Add(28);
+            //myTree.Add(8);
+            //myTree.Add(13);
+            //myTree.Add(45);
+            //myTree.Add(35);
+            //myTree.Add(0);
 
-            Node min = myTree.FindMinIterative(myTree.Root);
+            //Node min = myTree.FindMinIterative(myTree.Root);
 
-            min = myTree.FindMinRecursive(myTree.Root);
+            //min = myTree.FindMinRecursive(myTree.Root);
 
-            Node max = myTree.FindMaxIterative(myTree.Root);
+            //Node max = myTree.FindMaxIterative(myTree.Root);
 
-            max = myTree.FindMaxRecursive(myTree.Root);
+            //max = myTree.FindMaxRecursive(myTree.Root);
 
             //max.Data = -1;
 
-            myTree.PrintInorder(myTree.Root);
+            //myTree.PrintInorder(myTree.Root);
 
             //myTree.PrintBFSIterative(myTree.Root);
 
-            Node x = new Node();
+            //Node x = new Node();
             //x = myTree.FindNode(myTree.Root, 48);
             //x.Left = new Node(46);
             //x.Right = new Node(49);
@@ -69,7 +73,7 @@ namespace ProjectEuler
             //x = myTree.InOrderPredecessor(59);
             //x = myTree.FindParent(x);
             //myTree.DeleteNode(myTree.Root, 41);
-            myTree.DeleteNode(myTree.Root, 35);
+            //myTree.DeleteNode(myTree.Root, 35);
 
             //Console.WriteLine("");
             //myTree.PrintInorder(myTree.Root);
@@ -79,20 +83,67 @@ namespace ProjectEuler
 
             //myTree.PrintBFSRecursive(q);
 
-            Console.WriteLine("");
-            Console.WriteLine(myTree.IsBST());
-
-            
-            //int[] a = {5,0,9,6,2,1,7,4,22,8,12,11,10,19};
-
+            //Console.WriteLine("");
+            //Console.WriteLine(myTree.IsBST());
+            #endregion
+            #region MergeSortTest
+            //int[] a = { 5, 0, 9, 6, 2, 1, 7, 4, 22, 8, 12, 11, 10, 19 };
             //int[] b = MergeSort(a);
 
             //foreach(int i in b)
             //{
             //    Console.Write(i.ToString() + " ");
             //}
+            #endregion
+
+            int[] a = { 25, 49, 29, 6, 2, 1, 7, 4, 22, 8, 12, 11, 10, 19 };
+
+            int[] b = { -2,-3,-12,-1};
+
+            Console.WriteLine(MaxSumSubarray(a));
 
             Console.Read();
+        }
+
+        public static int MaxDifference(int[] a)
+        {
+            int min = a[0];   // contains minimum so far from left to right
+            int maxDiff = a[1] - a[0]; // contains max difference between current element with minimum so far going from left to right
+
+            for (int i = 1; i < a.Length; i++)
+            {
+                if (a[i] - min > maxDiff)
+                    maxDiff = a[i] - min;
+
+                if (a[i] < min)
+                    min = a[i];
+            }
+            return maxDiff;
+        }
+
+        /// <summary>
+        /// Using Kadane's algorithm to find max sum subarray
+        /// Works even for all negative numbers or all positive numbers
+        /// Most generic implementation
+        /// </summary>
+        /// <param name="a"></param>
+        /// <returns></returns>
+        public static int MaxSumSubarray(int[] a)
+        {
+            int maxCur = a[0];  // sum of the current subarray
+            int max = a[0]; // maximum sum subarray in the array so far going from left to right - max among all the current subrarray sums
+
+            for (int i = 1; i < a.Length; i++ )
+            {
+                //continue the existing subarray or begin a new one starting at a[i]
+                maxCur = Math.Max(maxCur + a[i], a[i]);
+
+                // a new subarray may have a sum greater than old subarray
+                if (maxCur > max)  
+                    max = maxCur;
+            }
+            return max;
+
         }
 
         public static int[] MergeSort(int[] a)
