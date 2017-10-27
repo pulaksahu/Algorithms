@@ -95,12 +95,17 @@ namespace ProjectEuler
             //    Console.Write(i.ToString() + " ");
             //}
             #endregion
+            #region MaximumSumSubArray
+            //int[] a = { 25, 49, 29, 6, 2, 1, 7, 4, 22, 8, 12, 11, 10, 19 };
 
-            int[] a = { 25, 49, 29, 6, 2, 1, 7, 4, 22, 8, 12, 11, 10, 19 };
+            //int[] b = { -2,-3,-12,-1, 12, -22, 1, 3,9,-13};
 
-            int[] b = { -2,-3,-12,-1, 12, -22, 1, 3,9,-13};
+            //Console.WriteLine(MaxSumSubarray(b));
+            #endregion
+            char[] a = {'a','b','b','a','a','b','b','b','c','c','a'};
 
-            Console.WriteLine(MaxSumSubarray(b));
+            LongestConsecutiveCharacter(a);
+
 
             Console.Read();
         }
@@ -145,6 +150,35 @@ namespace ProjectEuler
             return max;
 
         }
+
+        public static void LongestConsecutiveCharacter(char[] a)
+        {
+            int currentCount = 1;
+            int maxCount = 0;
+            char? maxChar = null;
+            char prevChar = a[0];
+            char currentChar;
+
+            for(int i = 1; i < a.Length; i++)
+            {
+                currentChar = a[i];
+                if (currentChar == prevChar)
+                    currentCount++;
+                else currentCount = 1;
+
+                if (currentCount > maxCount)
+                {
+                    maxCount = currentCount;
+                    maxChar = currentChar;
+                }
+                prevChar = currentChar;
+            }
+
+            Console.WriteLine(maxChar);
+            Console.WriteLine(maxCount.ToString());
+        }
+
+
 
         public static int[] MergeSort(int[] a)
         {
