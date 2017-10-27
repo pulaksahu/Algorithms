@@ -98,9 +98,9 @@ namespace ProjectEuler
 
             int[] a = { 25, 49, 29, 6, 2, 1, 7, 4, 22, 8, 12, 11, 10, 19 };
 
-            int[] b = { -2,-3,-12,-1};
+            int[] b = { -2,-3,-12,-1, 12, -22, 1, 3,9,-13};
 
-            Console.WriteLine(MaxSumSubarray(a));
+            Console.WriteLine(MaxSumSubarray(b));
 
             Console.Read();
         }
@@ -130,17 +130,17 @@ namespace ProjectEuler
         /// <returns></returns>
         public static int MaxSumSubarray(int[] a)
         {
-            int maxCur = a[0];  // sum of the current subarray
+            int currentSum = a[0];  // sum of the current subarray
             int max = a[0]; // maximum sum subarray in the array so far going from left to right - max among all the current subrarray sums
 
             for (int i = 1; i < a.Length; i++ )
             {
                 //continue the existing subarray or begin a new one starting at a[i]
-                maxCur = Math.Max(maxCur + a[i], a[i]);
+                currentSum = Math.Max(currentSum + a[i], a[i]);
 
                 // a new subarray may have a sum greater than old subarray
-                if (maxCur > max)  
-                    max = maxCur;
+                if (currentSum > max)
+                    max = currentSum;
             }
             return max;
 
