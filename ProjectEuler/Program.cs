@@ -87,13 +87,13 @@ namespace ProjectEuler
             //Console.WriteLine(myTree.IsBST());
             #endregion
             #region MergeSortTest
-            //int[] a = { 5, 0, 9, 6, 2, 1, 7, 4, 22, 8, 12, 11, 10, 19 };
-            //int[] b = MergeSort(a);
+            int[] a = { 5, 0, 9, 6, 2, 1, 7, 4, 22, 8, 12, 11, 10, 19 };
+            QuickSort(a);
 
-            //foreach(int i in b)
-            //{
-            //    Console.Write(i.ToString() + " ");
-            //}
+            foreach (int i in a)
+            {
+                Console.Write(i.ToString() + " ");
+            }
             #endregion
             #region MaximumSumSubArray
             //int[] a = { 25, 49, 29, 6, 2, 1, 7, 4, 22, 8, 12, 11, 10, 19 };
@@ -102,9 +102,16 @@ namespace ProjectEuler
 
             //Console.WriteLine(MaxSumSubarray(b));
             #endregion
-            char[] a = {'a','b','b','a','a','b','b','b','c','c','a'};
+            #region LongestConsecutiveCharacter
+            //char[] a = {'a','b','b','a','a','b','b','b','c','c','a'};
+            //LongestConsecutiveCharacter(a);
+            #endregion
 
-            LongestConsecutiveCharacter(a);
+            //int[] a = {1, 7, 3, 4};
+            
+            //int[] b = GetProductsOfAllIntsExceptAtIndex(a);
+
+
 
 
             Console.Read();
@@ -178,7 +185,27 @@ namespace ProjectEuler
             Console.WriteLine(maxCount.ToString());
         }
 
+        /// <summary>
+        /// Dont use brute force, dont use division
+        /// Make it happen in O(n)
+        /// </summary>
+        /// <param name="a"></param>
+        /// <returns></returns>
+        public static int[] GetProductsOfAllIntsExceptAtIndex(int[] a)
+        {
+            int[] products = new int[a.Length];
 
+            for (int i = 0; i < a.Length; i++)
+                products[i] = 1;
+
+            for (int i = 0; i < a.Length; i++)
+            {
+                if(i != i - i) // 0
+                    products[i - i] = products[i - i] * a[i];
+
+            }
+            return products;
+        }
 
         public static int[] MergeSort(int[] a)
         {
@@ -243,6 +270,133 @@ namespace ProjectEuler
                 if (number % i == 0) return false;
             }
             return true;
+        }
+
+
+        /// <summary>
+        /// Merge sort is fast i.e., O(n log n) algorithm
+        /// It needs aux arrays to sort, not an in place algorithm
+        /// Not constant space algorithm
+        /// </summary>
+        /// <param name="a"></param>
+        /// <returns></returns>
+        public static int[] MergeSortNew(int[] a)
+        {
+            // base case of recursion
+            if (a.Length < 2)
+                return a;
+
+            // split array into two
+            int length = a.Length;
+            int mid = length / 2;
+            int[] left = new int[mid];
+            int[] right = new int[length - mid];
+
+            for(int c = 0; c < a.Length; c++)
+            {
+                if (c < mid)
+                    left[c] = a[c];
+                else
+                    right[c - mid] = a[c];
+            }
+
+            // recursively call self to sort them
+            int[] sortedLeft = MergeSortNew(left);
+            int[] sortedRight = MergeSortNew(right);
+            int[] sortedArray = new int[length];
+
+            // merge the two sorted arrays into a single sorted array
+            int i = 0; int j = 0; int k = 0;
+            while(i < sortedLeft.Length && j < sortedRight.Length)
+            {
+                if(sortedLeft[i] < sortedRight[j])
+                {
+                    sortedArray[k] = sortedLeft[i];
+                    i++;
+                }
+                else
+                {
+                    sortedArray[k] = sortedRight[j];
+                    j++;
+                }
+                k++;
+            }
+            while(i < sortedLeft.Length)
+            {
+                sortedArray[k] = sortedLeft[i];
+                i++; k++;
+            }
+            while (j < sortedRight.Length)
+            {
+                sortedArray[k] = sortedRight[j];
+                j++; k++;
+            }
+
+            // return the merged sorted array
+            return sortedArray;
+        }
+
+        /// <summary>
+        /// Merge sort is great but it needs a lot of auxilliary arrays
+        /// Lot of extra memory is needed
+        /// Quick sort is equally fast but with constant space
+        /// Also randomized quick sort works faster than merge sort
+        /// Summary - quick sort is an in place algorithm with O(n log n) worst case complexity
+        /// </summary>
+        /// <param name="a"></param>
+        public static void QuickSort(int[] a)
+        {
+            QuickSort(a, 0, a.Length - 1);
+        }
+
+        /// <summary>
+        /// start and end indices are inclusive
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="start"></param>
+        /// <param name="end"></param>
+        public static void QuickSort(int[] a, int start, int end)
+        {
+            if(start < end) // base case of recursion
+            {
+                int pIndex = Partition(a, start, end);   // pIndex is the pivot index or partition index
+
+                QuickSort(a, start, pIndex - 1);
+                QuickSort(a, pIndex + 1, end);
+            }
+        }
+
+        /// <summary>
+        /// All elements to the left of pIndex are smaller than pivot
+        /// All elements to the right of pIndex are greater than pivot
+        /// The element at pIndex is called pivot
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="start"></param>
+        /// <param name="end"></param>
+        /// <returns></returns>
+        private static int Partition(int[] a, int start, int end)
+        {
+            int pivot = a[end];  // or select pivot randomly using a rand() function
+            int pIndex = start;
+
+            for(int i = start; i < end; i++)
+            {
+                if(a[i] < pivot)
+                {
+                    Swap(a, i, pIndex);
+                    pIndex++;
+                }
+            }
+            Swap(a, pIndex, end);   // this will ensure than element at pIndex is the pivot
+            return pIndex;   // return the partition index or the index of the pivot pIndex
+        }
+
+        private static void Swap(int[] a, int p1, int p2)
+        {
+            int t = a[p1];
+            a[p1] = a[p2];
+            a[p2] = t;
         }
     }
 }
