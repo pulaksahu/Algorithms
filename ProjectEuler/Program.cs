@@ -286,7 +286,7 @@ namespace ProjectEuler
             if (a.Length < 2)
                 return a;
 
-            // split array into two
+            // Step 1 - split array into two
             int length = a.Length;
             int mid = length / 2;
             int[] left = new int[mid];
@@ -300,12 +300,12 @@ namespace ProjectEuler
                     right[c - mid] = a[c];
             }
 
-            // recursively call self to sort them
+            // Step 2 - recursively call self to sort left and right segments of the array
             int[] sortedLeft = MergeSortNew(left);
             int[] sortedRight = MergeSortNew(right);
             int[] sortedArray = new int[length];
 
-            // merge the two sorted arrays into a single sorted array
+            // Step 3 - merge the two sorted arrays into a single sorted array
             int i = 0; int j = 0; int k = 0;
             while(i < sortedLeft.Length && j < sortedRight.Length)
             {
@@ -332,7 +332,7 @@ namespace ProjectEuler
                 j++; k++;
             }
 
-            // return the merged sorted array
+            // Step 4 - return the merged sorted array
             return sortedArray;
         }
 
@@ -359,9 +359,13 @@ namespace ProjectEuler
         {
             if(start < end) // base case of recursion
             {
-                int pIndex = Partition(a, start, end);   // pIndex is the pivot index or partition index
+                // Step 1. Partition the array around the pivot, left of the pivot are smaller, right of the pivot are greater than pivot element
+                int pIndex = Partition(a, start, end);   // pIndex is the index of the pivot or partition index
 
+                // Step 2. Recursively sort the left segment of the pivot
                 QuickSort(a, start, pIndex - 1);
+
+                // Step 3. Recursively sort the right segment of the pivot
                 QuickSort(a, pIndex + 1, end);
             }
         }
@@ -377,19 +381,20 @@ namespace ProjectEuler
         /// <returns></returns>
         private static int Partition(int[] a, int start, int end)
         {
-            int pivot = a[end];  // or select pivot randomly using a rand() function
-            int pIndex = start;
+            int pIndex = end;
+            int pivot = a[start];  // you can take any element of the array segment, random element works best
 
-            for(int i = start; i < end; i++)
+            for(int i = end; i > start; i--)
             {
-                if(a[i] < pivot)
+                if(a[i] > pivot)  // if any element is smaller than pivot, swap it to beginning of the array and increment the pIndex
                 {
                     Swap(a, i, pIndex);
-                    pIndex++;
+                    pIndex--;
                 }
             }
-            Swap(a, pIndex, end);   // this will ensure than element at pIndex is the pivot
-            return pIndex;   // return the partition index or the index of the pivot pIndex
+            Swap(a, start, pIndex);  // move pivot to the partition index
+
+            return pIndex;  // index of the pivot
         }
 
         private static void Swap(int[] a, int p1, int p2)
