@@ -48,6 +48,7 @@ namespace ConsoleApplication4
 
             foreach(char c in wordCharacters)
             {
+                // for each char in the word, move to the already existing next trie node 
                 if(current.NextSet.ContainsKey(c))
                 {
                     current = current.NextSet[c];
@@ -101,7 +102,7 @@ namespace ConsoleApplication4
             return allWords;
         }
 
-        public void TraverseAll(TrieNode current, char[] word, int index, List<String> allWords)
+        private void TraverseAll(TrieNode current, char[] word, int index, List<String> allWords)
         {
             // base condition - when this is the leaf node of the trie
             if (current.NextSet.Count == 0)
