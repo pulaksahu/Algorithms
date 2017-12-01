@@ -4,11 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ConsoleApplication4;
+using ConsoleApasdf;
 
 namespace ProjectEuler
 {
     class Program
     {
+        static int count = 0;
         static void Main(string[] args)
         {
             #region TrieTestCode
@@ -87,18 +89,18 @@ namespace ProjectEuler
             //Console.WriteLine(myTree.IsBST());
             #endregion
             #region MergeSortTest
-            int[] a = { 5, 0, 9, 6, 2, 1, 7, 4, 22, 8, 12, 11, 10, 19 };
-            QuickSort(a);
+            //int[] a = { 5, 0, 9, 6, 2, 1, 7, 4, 22, 8, 12, 11, 10, 19 };
+            //QuickSort(a);
 
-            foreach (int i in a)
-            {
-                Console.Write(i.ToString() + " ");
-            }
+            //foreach (int i in a)
+            //{
+            //    Console.Write(i.ToString() + " ");
+            //}
             #endregion
             #region MaximumSumSubArray
             //int[] a = { 25, 49, 29, 6, 2, 1, 7, 4, 22, 8, 12, 11, 10, 19 };
 
-            //int[] b = { -2,-3,-12,-1, 12, -22, 1, 3,9,-13};
+            //int[] b = { 5,1,2,-3,7,-4 };
 
             //Console.WriteLine(MaxSumSubarray(b));
             #endregion
@@ -111,6 +113,69 @@ namespace ProjectEuler
             
             //int[] b = GetProductsOfAllIntsExceptAtIndex(a);
 
+            #region MaxHeapNew
+
+            //NewMaxHeap x = new NewMaxHeap();
+            //x.Add(5);
+            //x.Add(0);
+            //x.Add(9);
+            //x.Add(6);
+            //x.Add(2);
+            //x.Add(1);
+            //x.Add(7);
+            //x.Add(4);
+            //x.Add(22);
+            //x.Add(8);
+            //x.Add(12);
+            //x.Add(11);
+            //x.Add(10);
+            //x.Add(19);
+
+            //int d = x.ExtractMax();
+            //int E = x.ExtractMax();
+            //int F = x.ExtractMax();
+            ////int F = x.ExtractMax();
+            //int H = x.ExtractMax(); ;
+            //int I = x.ExtractMax();
+
+            
+
+
+            #endregion
+
+            //Permute("GOOGLE");
+
+            //AllSubSets("ABCEE");
+
+
+            //LRUCache cache = new LRUCache(1);
+
+            //cache.put(2, 1);            
+            //cache.get(2);       // returns 1
+            //cache.put(3, 2);    // evicts key 2
+            //cache.get(2);       // returns -1 (not found)            
+            //cache.get(3);       // returns 2 
+
+
+            Trie t = new Trie();
+            t.AddWord("but");
+            t.AddWord("butter");
+            t.AddWord("bat");
+            t.AddWord("batch");
+            t.AddWord("batter");
+            t.AddWord("battery");
+            t.AddWord("bye");
+            t.AddWord("better");
+            t.AddWord("buttery");
+            t.AddWord("bait");
+            t.AddWord("cat");
+            t.AddWord("catch");
+            t.AddWord("catatonical");
+            t.AddWord("catatonic");
+            bool a = t.WordExists("catatonical");
+            t.WordExists("car");
+
+            List<String> s = t.PrefixSearch("bat");
 
 
 
@@ -142,20 +207,43 @@ namespace ProjectEuler
         /// <returns></returns>
         public static int MaxSumSubarray(int[] a)
         {
-            int currentSum = a[0];  // sum of the current subarray
-            int max = a[0]; // maximum sum subarray in the array so far going from left to right - max among all the current subrarray sums
+            int curSum = a[0];  // sum of the current subarray
+            int maxSum = a[0]; // maximum sum subarray in the array so far going from left to right - max among all the current subrarray sums
+            int sIndex = 0;
+            int eIndex = 0;
+            int maxStart = 0;
+            int maxEnd = 0;
 
             for (int i = 1; i < a.Length; i++ )
             {
                 //continue the existing subarray or begin a new one starting at a[i]
-                currentSum = Math.Max(currentSum + a[i], a[i]);
+                if (a[i] > curSum + a[i])
+                {
+                    curSum = a[i];
+                    sIndex = i; // start a new max sum subarray here
+                    eIndex = i; // end Index of the newly started max sum subarray is the startIndex itself
+                }
+                else
+                {
+                    curSum = curSum + a[i];
+                    eIndex = i;  // include this element in the existing max sum subarray - sliding window
+                }
 
                 // a new subarray may have a sum greater than old subarray
-                if (currentSum > max)
-                    max = currentSum;
+                if (curSum > maxSum)
+                {
+                    maxSum = curSum;
+                    maxStart = sIndex;
+                    maxEnd = eIndex;
+                }
             }
-            return max;
 
+            for (int i = maxStart; i <= maxEnd; i++)
+            {
+                Console.Write(a[i] + " ");
+            }
+
+            return maxSum;
         }
 
         public static void LongestConsecutiveCharacter(char[] a)
@@ -397,11 +485,82 @@ namespace ProjectEuler
             return pIndex;  // index of the pivot
         }
 
-        private static void Swap(int[] a, int p1, int p2)
+        private static void Swap<T>(T[] a, int p1, int p2)
         {
-            int t = a[p1];
+            T t = a[p1];
             a[p1] = a[p2];
             a[p2] = t;
+        }
+
+        public static void Permute(string s)
+        {
+            PrintPermutation(s.ToCharArray(), 0);
+        }
+
+        public static void AllSubSets(string str)
+        {
+            HashSet<char> SetSoFar = new HashSet<char>();
+            HashSet<char> SetOfChar = new HashSet<char>();
+
+            for (int i = 0; i < str.Length; i++)
+            {
+                SetOfChar.Add(str.ElementAt(i));   // this set will have each char only once, even duplicates will be once
+            }
+
+            PrintSubsets(0, SetSoFar, SetOfChar);
+        }
+
+        private static void PrintSubsets(int i, HashSet<char> SetSoFar, HashSet<char> SetOfChar)
+        {
+            if (i == SetOfChar.Count)
+            {
+                PrintAllCharInNewLineSubsets(SetSoFar);
+                return;
+            }
+
+            SetSoFar.Add(SetOfChar.ElementAt(i));     // add first char to the set so far and proceed recursively
+            PrintSubsets(i + 1, SetSoFar, SetOfChar);
+            SetSoFar.Remove(SetOfChar.ElementAt(i));  // remove first char from the set so far and proceed recursively
+            PrintSubsets(i + 1, SetSoFar, SetOfChar);
+            
+        }
+
+        private static void PrintPermutation(char[] a, int j)
+        {
+            if (j == a.Length - 1)
+            {
+                PrintAllCharInNewLine(a);
+                return;
+            }
+
+            for(int i = j; i < a.Length; i++)
+            {
+                Swap(a, i, j);
+
+                PrintPermutation(a, j + 1);
+
+                Swap(a, i, j);
+            }
+        }
+
+        private static void PrintAllCharInNewLineSubsets(HashSet<char> a)
+        {
+            count++;
+            Console.WriteLine(".");
+            foreach (char s in a)
+            {
+                Console.Write(s);
+            }
+        }
+
+        private static void PrintAllCharInNewLine(char[] a)
+        {
+            count++;
+            Console.WriteLine();
+            for(int i= 0; i < a.Length; i++)
+            {                
+                Console.Write(a[i]);
+            }
         }
     }
 }

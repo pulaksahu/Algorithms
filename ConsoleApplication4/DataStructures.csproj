@@ -46,6 +46,7 @@
     <Compile Include="Integer.cs" />
     <Compile Include="LinkedList.cs" />
     <Compile Include="ListNode.cs" />
+    <Compile Include="LRUCache.cs" />
     <Compile Include="MaxHeap.cs" />
     <Compile Include="MinHeap.cs" />
     <Compile Include="PriorityQueue.cs" />
@@ -54,6 +55,7 @@
     <Compile Include="SingleListNode.cs" />
     <Compile Include="SinglyLinkedList.cs" />
     <Compile Include="Stack.cs" />
+    <Compile Include="Trie.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
