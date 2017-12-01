@@ -40,6 +40,10 @@ namespace ConsoleApplication4
             this.Root = new TrieNode();
         }
 
+        /// <summary>
+        /// Complexity is the number of characters in the word - O(n)
+        /// </summary>
+        /// <param name="word"></param>
         public void AddWord(string word)
         {
             // start from root node as current
@@ -63,12 +67,17 @@ namespace ConsoleApplication4
             current.IsWordEnding = true; // at the end of the word, set the flag
         }
 
+        /// <summary>
+        /// Complexity - 
+        /// </summary>
+        /// <param name="prefix"></param>
+        /// <returns></returns>
         public List<String> PrefixSearch(string prefix)
         {
             List<String> allWords = new List<string>();  // keep all the words found so far
             TrieNode current = this.Root;  // starting current node
             char[] prefixArray = prefix.ToCharArray(); // character array of the prefix word
-            char[] word = new char[100];  // substring word created so far in a char array
+            char[] word = new char[50];  // substring word created so far in a char array - 50 is the max length of a word
             int index = 0; // keep track of the index of the above char array
 
             // traverse till the end of the prefix, words found before end of the prefix are not included
@@ -87,18 +96,20 @@ namespace ConsoleApplication4
                 }
             }
             // we are at the last character of the prefix - current node => last char of the prefix
+            // Complexity till now. O(k) where k is number of char in the prefix
 
             // if last char of prefix is a word ending, add this word to the list of all words
             if (current.IsWordEnding)
                 allWords.Add(CreateWord(word));
 
+            // Complexity of below - O(PM) where M is the number of char in the words and P is the number of words in the tree
             // traverse towards all the leafs of the trie - recursively
             foreach(TrieNode c in current.NextSet.Values)
             {
                 TraverseAll(c, word, index, allWords);
             }
 
-            // return all words collected
+            // return all words collected  -  total complexity is O(k + PM)
             return allWords;
         }
 
