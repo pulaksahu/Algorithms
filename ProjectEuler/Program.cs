@@ -157,29 +157,87 @@ namespace ProjectEuler
             //cache.get(3);       // returns 2 
 
 
-            Trie t = new Trie();
-            t.AddWord("but");
-            t.AddWord("butter");
-            t.AddWord("bat");
-            t.AddWord("batch");
-            t.AddWord("batter");
-            t.AddWord("battery");
-            t.AddWord("bye");
-            t.AddWord("better");
-            t.AddWord("buttery");
-            t.AddWord("bait");
-            t.AddWord("cat");
-            t.AddWord("catch");
-            t.AddWord("catatonical");
-            t.AddWord("catatonic");
-            bool a = t.WordExists("catatonical");
-            t.WordExists("car");
+            //Trie t = new Trie();
+            //t.AddWord("but");
+            //t.AddWord("butter");
+            //t.AddWord("bat");
+            //t.AddWord("batch");
+            //t.AddWord("batter");
+            //t.AddWord("battery");
+            //t.AddWord("bye");
+            //t.AddWord("better");
+            //t.AddWord("buttery");
+            //t.AddWord("bait");
+            //t.AddWord("cat");
+            //t.AddWord("catch");
+            //t.AddWord("catatonical");
+            //t.AddWord("catatonic");
+            //bool a = t.WordExists("catatonical");
+            //t.WordExists("car");
 
-            List<String> s = t.PrefixSearch("bat");
+            //List<String> s = t.PrefixSearch("bat");
 
+            var map = new Dictionary<int, HashSet<String>>();
 
+            PrintBrackets(4);
 
             Console.Read();
+        }
+
+
+        public static void PrintBrackets(int n)
+        {
+            Dictionary<int, HashSet<String>> map = new Dictionary<int, HashSet<String>>();
+
+            for (int i = 1; i <= n; i++)
+            {
+                var combos = Brackets(i, map);
+                foreach(String x in combos)
+                {
+                    Console.Write(x + " ");
+                }
+                Console.WriteLine();
+            }
+        }
+
+        /// <summary>
+        /// Use of HashMap<> for memoization is a new thing learn
+        /// Memoization significantly improves runtime complexity O(n) in this case
+        /// Use of recursion/recursive thinking to solve this kind of problems
+        /// Avoid duplicates by using HashSet<> in such problems
+        /// </summary>
+        /// <param name="i"></param>
+        /// <param name="map"></param>
+        /// <returns></returns>
+        public static HashSet<String> Brackets(int i, Dictionary<int, HashSet<String>> map)
+        {
+            if (map.ContainsKey(i)) // memoization
+                return map[i];
+            else if(i == 1)
+            {
+                HashSet<String> combo = new HashSet<string>();
+                combo.Add("()");
+                map.Add(1, combo);
+                return map[1];
+            }
+            else
+            {
+                HashSet<String> juniorCombo = new HashSet<string>();
+                HashSet<String> combo = new HashSet<string>();
+                juniorCombo = Brackets(i - 1, map);
+
+                foreach(String single in juniorCombo)
+                {
+                    combo.Add("(" + single + ")");
+                    combo.Add("()" + single);
+                    if(i > 2)
+                    {
+                        combo.Add(single + "()");
+                    }
+                }
+                map.Add(i, combo);
+                return combo;
+            }
         }
 
         public static int MaxDifference(int[] a)
