@@ -213,7 +213,7 @@ namespace ProjectEuler
         {
             if (map.ContainsKey(i)) // memoization
                 return map[i];
-            else if(i == 1)
+            else if(i == 1)  // base case of recursion
             {
                 HashSet<String> combo = new HashSet<string>();
                 combo.Add("()");
@@ -222,20 +222,21 @@ namespace ProjectEuler
             }
             else
             {
-                HashSet<String> juniorCombo = new HashSet<string>();
-                HashSet<String> combo = new HashSet<string>();
+                HashSet<String> juniorCombo = new HashSet<string>();   // juniorCombo is Set of all strings for i-1 case
+                HashSet<String> combo = new HashSet<string>();         // combo is Set of all string for i th case
                 juniorCombo = Brackets(i - 1, map);
 
                 foreach(String single in juniorCombo)
                 {
                     combo.Add("(" + single + ")");
                     combo.Add("()" + single);
-                    if(i > 2)
+
+                    if(i > 2)     // for i >= 3 the single can be before or after the () - 2 different cases
                     {
                         combo.Add(single + "()");
                     }
                 }
-                map.Add(i, combo);
+                map.Add(i, combo);  // add the set to the map (Dictionary) for memoization
                 return combo;
             }
         }
