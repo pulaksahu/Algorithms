@@ -113,6 +113,44 @@ namespace ConsoleApplication4
             }
         }
 
+        public void PrintPostOrder(Node current)
+        {
+            if (current == null)
+                return;
+
+            PrintInorder(current.Left);            
+            PrintInorder(current.Right);
+            Console.Write(current.Data.ToString() + " ");
+        }
+
+        public void PrintPostOrderWithoutRecursion(Node current)
+        {
+            Stack<Node> stack = new Stack<Node>();
+            stack.Push(current);
+
+            HashSet<Node> visited = new HashSet<Node>();
+
+            while (stack.Count != 0) // while stack is not empty
+            {
+                current = stack.Peek();
+
+                if (current.Left != null && !visited.Contains(current.Left))
+                {
+                    stack.Push(current.Left);
+                }
+                else
+                {
+                    Node x = stack.Pop();
+
+                    if (x.Right != null && !visited.Contains(current.Right))
+                        stack.Push(x.Right);
+                    
+                    visited.Add(x);
+                    Console.Write(x.Data.ToString() + " ");
+                }
+            }
+        }
+
         /// <summary>
         /// Depth First Search - inorder, preorder, postorder
         /// All DFS make use of stack 
@@ -127,6 +165,33 @@ namespace ConsoleApplication4
             PrintInorder(current.Left);
             Console.Write(current.Data.ToString() + " ");
             PrintInorder(current.Right);
+        }
+
+        public void PrintInorderWithoutRecursion(Node current)
+        {
+            Stack<Node> stack = new Stack<Node>();
+            stack.Push(current);
+
+            HashSet<Node> visited = new HashSet<Node>();
+
+            while(stack.Count != 0) // while stack is not empty
+            {
+                current = stack.Peek();
+
+                if (current.Left != null && !visited.Contains(current.Left))
+                {
+                    stack.Push(current.Left);
+                }
+                else
+                {
+                    Node x = stack.Pop();
+                    visited.Add(x);
+                    Console.Write(x.Data.ToString() + " ");
+
+                    if (x.Right != null && !visited.Contains(current.Right))
+                        stack.Push(x.Right);
+                }
+            }
         }
 
         /// <summary>
@@ -394,6 +459,34 @@ namespace ConsoleApplication4
                 return true;
             else
                 return false;
+        }
+
+        public int kthSmallest(Node root, int k)
+        {
+
+            Integer K = new Integer(k);
+            Node result = kthSmallest(root, K);
+            if (result != null)
+                return result.Data;
+            else
+                return -1;
+        }
+
+        private Node kthSmallest(Node current, Integer k)
+        {
+            if (current == null)
+                return null;
+
+            Node left = kthSmallest(current.Left, k);
+            if (left != null)
+                return left;
+            else
+            {
+                k.Decrement();
+                if (k.Value == 0)
+                    return current;
+            }
+            return kthSmallest(current.Right, k);
         }
     }
 }

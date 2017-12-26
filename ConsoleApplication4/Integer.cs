@@ -13,8 +13,24 @@ namespace ConsoleApplication4
 
     public class Integer : MyType
     {
-        public int? Value;
+        public Integer()
+        {
 
+        }
+        public Integer(int k)
+        {
+            this.Value = k;
+        }
+
+        public void Decrement()
+        {
+            this.Value -= 1;
+        }
+
+
+        public int? Value {get; set;}
+
+        
         public void Print()
         {
             Console.WriteLine(Value.ToString());

@@ -27,7 +27,7 @@ namespace ProjectEuler
             ///
             #endregion
             #region BSTTest
-            ///
+
             //BST myTree = new BST();
             //myTree.Add(17);
             //myTree.Add(28);
@@ -48,6 +48,17 @@ namespace ProjectEuler
             //myTree.Add(45);
             //myTree.Add(35);
             //myTree.Add(0);
+            
+
+
+            //myTree.PrintInorder(myTree.Root);
+            //Console.WriteLine();
+            //myTree.PrintInorderWithoutRecursion(myTree.Root);
+
+            //Console.WriteLine();
+
+            //int x = myTree.kthSmallest(myTree.Root, 2);
+
 
             //Node min = myTree.FindMinIterative(myTree.Root);
 
@@ -59,7 +70,7 @@ namespace ProjectEuler
 
             //max.Data = -1;
 
-            //myTree.PrintInorder(myTree.Root);
+            
 
             //myTree.PrintBFSIterative(myTree.Root);
 
@@ -177,11 +188,163 @@ namespace ProjectEuler
 
             //List<String> s = t.PrefixSearch("bat");
 
-            var map = new Dictionary<int, HashSet<String>>();
+            //var map = new Dictionary<int, HashSet<String>>();
 
-            PrintBrackets(4);
+            //PrintBrackets(4);
+
+
+            //sortCharacters("adfceb");
+
+
+            //int[] a = { 100, 44, 15, -11, 0, -88, 100, 102, 0};
+
+            //int[] sorted = SortArray(a);
+
+
+            //PrintAllPermutations("abcd".ToCharArray());
+
+
+            int total = 88;
+            int[] d = {2,5,6,19,21};
+            int[] dpMap = new int[total + 1];
+            var map = new Dictionary<int, int>();
+
+            int result = MinCoins(total, d, map);
+
+            int result2 = MinCoinsDP(total, d, dpMap);
 
             Console.Read();
+        }
+
+
+        public static void PrintAllSubsets(char[] a)
+        {
+            char[] setSoFar = new char[a.Length];
+            int index = 0;
+
+            PrintAllSubsets(a, setSoFar, index);
+        }
+
+        public static void PrintAllPermutations(char[] a)
+        {
+            PrintAllPermutations(a, 0);
+        }
+
+        private static void PrintAllPermutations(char[] a, int i)
+        {
+            if(i == a.Length)
+            {
+                PrintAllCharInNewLine(a);
+                return;
+            }
+
+            // swap i-th element of the char[] with each of the subsequent elements and call recursion
+            for (int j = i; j < a.Length; j++)
+            {
+                Swap(a, i, j);   // fix j th element in the i th place and permute remaining array
+                PrintAllPermutations(a, i + 1);  // leap of faith
+                Swap(a, i, j);   // make the char[] or string as it was before - backtracking
+            }
+        }
+
+        /// <summary>
+        /// Classic example of inclusion-exclusion principle. Inclusion exclusion can be interchanged in order.
+        /// Number of nodes in the recursion tree =>  2 ^ n  => Time complexity = O(2^n)   ... n is the no of char in the array
+        /// Height of the recursion tree => log n => Space complexity = O(log n)       ... n is the no of char in the array
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="setSoFar"></param>
+        /// <param name="index"></param>
+        private static void PrintAllSubsets(char[] a, char[] setSoFar, int index)
+        {
+            if (index == a.Length)
+            {
+                PrintAllCharInNewLine(setSoFar);
+                return;
+            }
+            // Step 1 - Inclusion
+            setSoFar[index] = a[index];            
+            PrintAllSubsets(a, setSoFar, index + 1);
+
+            // Step 2 - Exclusion  (step 1 and step 2 can be interchanged)
+            setSoFar[index] = '\0';       // updating the same index is called backtracking
+            PrintAllSubsets(a, setSoFar, index + 1);
+        }
+
+        /// <summary>
+        /// Total space required is O(n + k)
+        /// </summary>
+        /// <param name="a"></param>
+        /// <returns></returns>
+        private static int[] SortArray(int[] a)
+        {
+            int min = System.Int32.MaxValue;
+            int max = System.Int32.MinValue;
+            int[] result = new int[a.Length]; // auxilliary space required O(n) for int[] result
+
+            // below loop is O(n)
+            for(int i = 0; i < a.Length; i++)
+            {
+                if (a[i] < min)
+                    min = a[i];
+                if (a[i] > max)
+                    max = a[i];
+            }
+            int[] map = new int[max - min + 1]; // auxilliary space required O(k) for int[] map where k is the range of the integers
+
+            int resultCount = 0;
+            // below loop is O(n)
+            for (int i = 0; i < a.Length; i++)
+            {
+                map[a[i] - min] += 1;
+            }
+
+            // below loop is O(k)
+            for (int i = 0; i < map.Length; i++)
+            {
+                int count = map[i];
+
+                for (int j = 0; j < count; j++)
+                {
+                    result[resultCount] = i + min;
+                    resultCount++;
+                }
+            }
+            return result;
+
+            // total space required is O(n + k)
+            // total time required is O(2n + k) => O(n + k)
+        }
+
+        static String sortCharacters(String inString)
+        {
+
+            char[] a = inString.ToCharArray();
+            char[] result = new char[a.Length];
+            int[] allCharCount = new int[256]; // all elements initialized to 0
+
+            // below for loop will cost O(n)
+            for (int i = 0; i < a.Length; i++)
+            {
+                int x = (int)a[i];
+                allCharCount[x] += 1;
+            }
+
+            int resultCount = 0;
+
+            // below loops will cost O(n)
+            for (int i = 0; i < 256; i++)
+            {
+                int count = allCharCount[i];
+
+                for (int j = 0; j < count; j++)
+                {
+                    result[resultCount] = (char)i;
+                    resultCount++;
+                }
+            }
+
+            return result.ToString();
         }
 
 
@@ -581,8 +744,9 @@ namespace ProjectEuler
             PrintSubsets(i + 1, SetSoFar, SetOfChar);
             SetSoFar.Remove(SetOfChar.ElementAt(i));  // remove first char from the set so far and proceed recursively
             PrintSubsets(i + 1, SetSoFar, SetOfChar);
-            
         }
+
+
 
         private static void PrintPermutation(char[] a, int j)
         {
@@ -615,10 +779,91 @@ namespace ProjectEuler
         private static void PrintAllCharInNewLine(char[] a)
         {
             count++;
-            Console.WriteLine();
+            Console.Write(count + " - ");
             for(int i= 0; i < a.Length; i++)
-            {                
-                Console.Write(a[i]);
+            {  
+                if(a[i] != '\0')
+                    Console.Write(a[i]);
+            }
+            Console.WriteLine();
+        }
+
+        /// <summary>
+        /// Time complexity - O(d ^ height of the recursion tree H)
+        /// Space complexity - O(height of the recursion tree H)
+        /// </summary>
+        /// <param name="total"></param>
+        /// <param name="denominations"></param>
+        /// <param name="map"></param>
+        /// <returns></returns>
+        public static int MinCoins(int total, int[] denominations, Dictionary<int, int> map)
+        {
+            if (total == 0)
+                return 0;
+            if (total < 0)
+                return int.MaxValue;
+            if (map.ContainsKey(total))
+                return map[total];
+
+            int min = int.MaxValue;
+            
+            foreach(int d in denominations)
+            {
+                if (d <= total)
+                {
+                    int x = MinCoins(total - d, denominations, map);
+                    if (x < min)
+                    {
+                        min = x;
+                    }
+                }
+            }
+            if (min == int.MaxValue)
+            {
+                min = int.MaxValue;
+                map.Add(total, min);
+            }
+            else
+            {
+                min = min + 1;
+                map.Add(total, min);
+            }
+            return min;
+        }
+
+        public static int MinCoinsDP(int total, int[] denominations, int[] map)
+        {
+            if (total == 0)
+                return 0;
+            if (total < 0)
+                return int.MaxValue;
+            
+            for (int i = 1; i < map.Length; i++) // f(0) => 0, start from 1
+                map[i] = int.MaxValue;
+
+            for (int i = 1; i <= total; i++)
+            {
+                foreach (int d in denominations)
+                {
+                    if (d <= i)
+                    {
+                        if (map[i - d] != int.MaxValue &&  map[i - d] + 1 < map[i])
+                        {
+                            map[i] = map[i - d] + 1;
+                        }
+                    }
+                }
+            }
+            return map[total];
+        }
+
+        private static void PrintAllNumbers(int[] coins)
+        {
+            Console.WriteLine();
+            foreach (int s in coins)
+            {
+                 if(s != 0)
+                    Console.Write(s + " ");
             }
         }
     }

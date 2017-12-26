@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace ConsoleApplication4
 {
-    public class Stack<T>
-    {
+    //public class Stack<T>
+    //{
         
-    }
+    //}
 }
