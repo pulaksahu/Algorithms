@@ -204,7 +204,7 @@ namespace ProjectEuler
             //PrintAllPermutations("abcd".ToCharArray());
 
 
-            int total = 88;
+            int total = 100;
             int[] d = {2,5,6,19,21};
             int[] dpMap = new int[total + 1];
             var map = new Dictionary<int, int>();
@@ -791,6 +791,12 @@ namespace ProjectEuler
         /// <summary>
         /// Time complexity - O(d ^ height of the recursion tree H)
         /// Space complexity - O(height of the recursion tree H)
+        /// It has many subproblems being solved again and again, so overlapping subproblems
+        /// Problem solution is the combination of all its subproblems - optimal substructure
+        /// If a problem has both above 2 properties - then it can be solved using DP (overlapping subproblems and optimal substructure)
+        /// Recursion is solving the problem in a top-down approach of the recursion tree
+        /// DP is solving the recursion tree from bottom-up approach
+        /// DP can significantly improve time complexity eg., from exponential to linear is possible using DP
         /// </summary>
         /// <param name="total"></param>
         /// <param name="denominations"></param>
@@ -831,6 +837,16 @@ namespace ProjectEuler
             return min;
         }
 
+        /// <summary>
+        /// Time Complexity - O(nD) where n is total value and D is the number of denominations
+        /// Significant improvement in time complexity using DP. 
+        /// Without dp, the time complexity was O(d ^ height of the recursion tree H) i.e., exponential
+        /// Space complexity - O(n + 1) = O(n)
+        /// </summary>
+        /// <param name="total"></param>
+        /// <param name="denominations"></param>
+        /// <param name="map"></param>
+        /// <returns></returns>
         public static int MinCoinsDP(int total, int[] denominations, int[] map)
         {
             if (total == 0)
@@ -841,13 +857,14 @@ namespace ProjectEuler
             for (int i = 1; i < map.Length; i++) // f(0) => 0, start from 1
                 map[i] = int.MaxValue;
 
+            // below two loops have time complexity - O(n.D)
             for (int i = 1; i <= total; i++)
             {
                 foreach (int d in denominations)
                 {
                     if (d <= i)
                     {
-                        if (map[i - d] != int.MaxValue &&  map[i - d] + 1 < map[i])
+                        if (map[i - d] != int.MaxValue && map[i - d] + 1 < map[i])
                         {
                             map[i] = map[i - d] + 1;
                         }
