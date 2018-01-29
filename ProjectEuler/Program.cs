@@ -204,14 +204,19 @@ namespace ProjectEuler
             //PrintAllPermutations("abcd".ToCharArray());
 
 
-            int total = 100;
-            int[] d = {2,5,6,19,21};
-            int[] dpMap = new int[total + 1];
-            var map = new Dictionary<int, int>();
+            //int total = 100;
+            //int[] d = {2,5,6,19,21};
+            //int[] dpMap = new int[total + 1];
+            //var map = new Dictionary<int, int>();
 
-            int result = MinCoins(total, d, map);
+            //int result = MinCoins(total, d, map);
 
-            int result2 = MinCoinsDP(total, d, dpMap);
+            //int result2 = MinCoinsDP(total, d, dpMap);
+
+            //int x = levenshteinDistance("abcdef", "azced");
+
+            int[] a = {8,5,13,7 };
+            int x = maxWin(a);
 
             Console.Read();
         }
@@ -882,6 +887,63 @@ namespace ProjectEuler
                  if(s != 0)
                     Console.Write(s + " ");
             }
+        }
+
+        static int levenshteinDistance(String strWord1, String strWord2) 
+        {
+            char[] w1 = strWord1.ToCharArray();
+            char[] w2 = strWord2.ToCharArray();
+        
+            int[,] dp = new int[w1.Length + 1,w2.Length + 1];
+        
+            for(int i = 0; i <= w1.Length; i++)        
+                dp[i,0] = i;
+        
+            for(int j = 0; j <= w2.Length; j++)        
+                dp[0,j] = j;
+        
+            for(int i = 1; i <= w1.Length; i++)
+                for(int j = 1; j <= w2.Length; j++)
+                {
+                    if(w1[i - 1] == w2[j - 1])
+                        dp[i,j] = dp[i-1,j-1];
+                    else
+                        dp[i,j] = Math.Min(dp[i-1,j-1], Math.Min(dp[i,j-1], dp[i-1,j])) + 1;
+                }
+            return dp[w1.Length,w2.Length];
+        }
+
+        public static int maxWin(int[] intCoins) 
+        {
+            //HashMap<String, Integer> map = new  HashMap<String, Integer>();
+            //return f(intCoins, 0, intCoins.length - 1, map);
+        
+            int l = intCoins.Length;
+        
+            int[,] dp = new int[l,l];
+                    
+            for(int g = 0; g < l; g++)
+              for(int i = 0; i < l; i++)
+              {
+                  int j = i + g;
+              
+                  if(j < l)
+                  {
+                      if(i == j)
+                      {
+                          dp[i,j] = intCoins[i];
+                      }
+                      else if(j == i + 1)
+                      {
+                          dp[i,j] = Math.Max(intCoins[i], intCoins[j]);
+                      }
+                      else
+                      {
+                          dp[i,j] = Math.Max(intCoins[i] + Math.Min(dp[i + 2,j],dp[i+1,j-1]), intCoins[j] + Math.Min(dp[i+1,j-1],dp[i,j-2]));
+                      }
+                  }
+              }
+            return dp[0,l-1];
         }
     }
 }
